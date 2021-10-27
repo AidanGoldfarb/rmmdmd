@@ -1,27 +1,6 @@
-#[allow(unused)]
-pub fn atn(i:usize, j:usize, n: usize) -> f64{
-    let mut i = i as f64;
-    let mut j = j as f64;
-    let n = n as f64;
-    let mut t: f64 = 0.0;
-    let mut n_temp: f64 = n as f64;
-
-    if j > n {
-        t = n*n;
-    }
-    while n_temp > 1.0 {
-        if j > n_temp {
-            t += n*n;
-        }
-        if i > n_temp {
-            t +=  2.0 * (n/2.0)*(n/2.0)
-        }
-        j = ((j-1.0)%n_temp) + 1.0;
-        i = ((i-1.0)%n_temp) + 1.0;
-        n_temp /= 2.0;
-    }
-    return t;
-}
+/*
+    (29)
+*/
 #[allow(unused)]
 pub fn my_atn(n: usize) -> f64{
     let n = n as f64;
@@ -40,11 +19,95 @@ pub fn my_atn(n: usize) -> f64{
     return t1 + t2 + t3 - t4;
 }
 
+/*
+    (29)
+*/
 #[allow(unused)]
-fn t(n: f64) -> f64{
+pub fn atn(i:usize, j:usize, n: usize) -> f64{
+    let mut i = i as f64;
+    let mut j = j as f64;
+    let n = n as f64;
+    let mut t: f64 = my_atn(n as usize);//0.0;
+    let mut n_temp: f64 = n as f64;
+
+    if j > n {
+        t = n*n;
+    }
+    while n_temp > 1.0 {
+        if j > n_temp {
+            t += n*n;
+        }
+        if i > n_temp {
+            t +=  2.0 * (n/2.0)*(n/2.0)
+        }
+        j = ((j-1.0)%n_temp) + 1.0;
+        i = ((i-1.0)%n_temp) + 1.0;
+        n_temp /= 2.0;
+    }
+    return t;
+}
+
+
+/*
+    (30)
+*/
+#[allow(unused)]
+pub fn atn_c(i:usize, j:usize, n: usize) -> f64{
+    let i = i as f64;
+    let j = j as f64;
+    let mut n = n as f64;
+    let (mut t1, mut t2) = (0.0,0.0);
+    let mut c = 0.0;
+    t1 += (2.0_f64.powf(c).powf(2.0)) * 
+               I((j-1.0%2.0*n)% 2.0_f64.powf(n+1.0)+1.0 > 2.0_f64.powf(n));
+    while n > 1.0{
+        t1 += (2.0_f64.powf(c).powf(2.0)) * 
+               I((j-1.0%2.0*n)% 2.0_f64.powf(c+1.0)+1.0 > 2.0_f64.powf(c));
+        t2 += (2.0_f64.powf(c).powf(2.0)) * 
+               I((i-1.0%2.0*n)% 2.0_f64.powf(c+1.0)+1.0 > 2.0_f64.powf(c));
+        n -= 1.0;
+        c += 1.0;
+    }
+    t1 + t2
+}
+
+
+// pub fn F_A(i:usize, j:usize, n:usize) {
+//     f_T(i,j,n) + f_AB(i,j,n)
+// }
+
+// pub fn f_T(i:usize, j:usize, n:usize){
+
+// }
+
+
+
+
+#[allow(unused)]
+pub fn t(n: f64) -> f64{
     return n*n*(2.0*n-1.0);
 }
 #[allow(unused)]
 fn d(n: f64) -> f64{
     return t(n) + 2.0*n*n;
+}
+
+#[allow(unused)]
+#[allow(non_snake_case)]
+fn I(cond: bool) -> f64{
+    cond as i64 as f64
+}
+
+#[cfg(test)]
+mod tests {
+    // Note this useful idiom: importing names from outer (for mod tests) scope.
+    use super::*;
+
+    #[test]
+    fn test_atn() {
+        for i in 0..50{
+            assert_eq!(atn(0,0,i), my_atn(i));
+        }
+    }
+
 }
