@@ -2,8 +2,8 @@ mod a;
 use a::{*};
 
 fn main() {
-    let (_a,_b,c) = (2,2,4);
-    let  t = my_atn(c);
+    let (a,b,c) = (1,1,1);
+    let  t = F_A(a,b,c);
     println!("{}", t);
     // t = my_atn(a,b,c);
     // println!("{}", t);
