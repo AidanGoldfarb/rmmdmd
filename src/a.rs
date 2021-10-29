@@ -5,14 +5,14 @@
 pub fn my_atn(n: usize) -> f64{
     let n = n as f64;
     
-    let t1 = t(n);
+    let t1 = T(n);
     let t2 = 2.0*n*n;
-    let t3 = 8.0*t(n/2.0);
+    let t3 = 8.0*T(n/2.0);
     let mut t4 = 0.0;
     let mut count = n;
     let mut i = 1.0;
     while count > 1.0 {
-        t4 += 2.0*t(2.0_f64.powf(i-1.0));
+        t4 += 2.0*T(2.0_f64.powf(i-1.0));
         count /= 2.0;
         i += 1.0;
     }
@@ -74,8 +74,7 @@ pub fn atn_c(i:usize, j:usize, n: usize) -> f64{
 /*
     (23)
 */
-#[allow(unused)]
-#[allow(non_snake_case)]
+#[allow(unused,non_snake_case)]
 pub fn F_A(i:usize, j:usize, n:usize) -> f64{
     f_T(i,j,n) + f_AB(i as f64,j as f64,n as f64)
 }
@@ -83,8 +82,7 @@ pub fn F_A(i:usize, j:usize, n:usize) -> f64{
 /*
     (31)
 */
-#[allow(unused)]
-#[allow(non_snake_case)]
+#[allow(unused,non_snake_case)]
 pub fn f_T(i:usize, j:usize, n:usize) -> f64{
     my_atn(n)+atn_c(i,j,n)
 }
@@ -92,8 +90,7 @@ pub fn f_T(i:usize, j:usize, n:usize) -> f64{
 /*
     (41)
 */
-#[allow(unused)]
-#[allow(non_snake_case)]
+#[allow(unused,non_snake_case)]
 pub fn f_AB(i:f64, j:f64, n:f64) -> f64{
     if n < 1.0{
         return 0.0
@@ -112,22 +109,53 @@ pub fn f_AB(i:f64, j:f64, n:f64) -> f64{
 }
 
 
-
-
-#[allow(unused)]
-pub fn t(n: f64) -> f64{
+#[allow(unused,non_snake_case)]
+pub fn T(n: f64) -> f64{
     return n*n*(2.0*n-1.0);
 }
-#[allow(unused)]
-fn d(n: f64) -> f64{
-    return t(n) + 2.0*n*n;
+#[allow(unused,non_snake_case)]
+fn D(n: f64) -> f64{
+    return T(n) + 2.0*n*n;
 }
 
-#[allow(unused)]
-#[allow(non_snake_case)]
+#[allow(unused,non_snake_case)]
 fn I(cond: bool) -> f64{
     cond as i64 as f64
 }
+
+#[allow(unused,non_snake_case)]
+fn Ln(n: f64, big_n: f64) -> f64{
+    8.0_f64.powf(big_n.log2() - n.log2())
+}
+
+
+/*
+Temporary utils
+*/
+#[allow(unused)]
+fn delta(n: f64) -> f64{
+    8.0_f64.powf(n.log2())
+}
+
+#[allow(unused)]
+fn phi(n: f64) -> f64{
+    8.0_f64.powf(n.log2()) - 2.0_f64.powf(2.0*n.log2()-1.0)
+}
+
+#[allow(unused)]
+fn lambda(n: f64) -> f64{
+    8.0_f64.powf(n.log2()) - 2.0_f64.powf(2.0*n.log2())
+}
+
+#[allow(unused)]
+fn omega(n: f64) -> f64{
+    8.0_f64.powf(n.log2()) - 2.0_f64.powf(2.0*n.log2()-1.0)
+}
+
+
+
+/*
+*/
 
 #[cfg(test)]
 mod tests {
@@ -138,6 +166,17 @@ mod tests {
     fn test_atn() {
         for i in 0..50{
             assert_eq!(atn(0,0,i), my_atn(i));
+        }
+    }
+
+    #[test]
+    fn verify_table(){
+        let n = vec![1.0,2.0,4.0,8.0];
+        let tn_correct = vec![1.0,12.0,112.0,960.0];
+        let dn_correct = vec![3.0,20.0,144.0,1088.0];
+        for (i,val) in n.iter().enumerate(){
+            assert_eq!(T(*val), tn_correct[i]);
+            assert_eq!(D(*val), dn_correct[i]);
         }
     }
 
