@@ -1,12 +1,15 @@
 mod a;
 mod b;
+mod temp;
 mod util;
-use a::{*};
+//use a::{*};
+use temp::{*};
 
 fn main() {
-    let (a,b,c) = (1,1,1);
-    let  t = F_A(a,b,c);
-    println!("{}", t);
-    // t = my_atn(a,b,c);
-    // println!("{}", t);
+    let n = 4;
+    let t = DT2(n);
+    for r in t{
+        println!("{:?}", r);
+    }
+    
 }

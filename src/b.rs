@@ -89,6 +89,10 @@ pub fn g_T(i:usize, j:usize, n:usize) -> f64{
     t1 + t2 + t3 + t4
 }
 
+/*
+    (56)
+*/
+#[allow(unused,non_snake_case)]
 pub fn g_AB(i:f64, j:f64, n:f64) -> f64{
     if n < 1.0{
         return 0.0
