@@ -7,9 +7,14 @@ use temp::{*};
 
 fn main() {
     let n = 4;
-    let t = DT2(n);
-    for r in t{
+    let dt1 = DT1(n);
+    let _dt2 = DT2(n);
+    for r in dt1{
         println!("{:?}", r);
     }
+    // println!("\n\n\n");
+    // for r in dt2{
+    //     println!("{:?}", r);
+    // }
     
 }
