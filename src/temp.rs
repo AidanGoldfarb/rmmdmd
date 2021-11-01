@@ -42,7 +42,7 @@ pub fn DT1(n:usize) -> Vec<Vec<f64>>{
                     }
                 }
             }
-            3=> { //q4
+            3 => { //q4
                 if DEBUG {println!("-----Q4-----");}
                 let factor = d2(n) - (n/2.0)*(n/2.0);
                 let mut row = 0;
@@ -124,10 +124,6 @@ pub fn DT2(n:usize) -> Vec<Vec<f64>>{
 }
 
 
-
-
-
-
 pub fn sum_n(n: f64, mut reps: usize) -> f64{
     let mut sum = 0.0;
     while reps > 0{
@@ -136,7 +132,6 @@ pub fn sum_n(n: f64, mut reps: usize) -> f64{
     }
     sum
 }
-
 
 use std::ops::Range;
 #[allow(unused)]
@@ -148,14 +143,8 @@ pub fn init_ranges(n:&usize) -> Vec<(Range<usize>,Range<usize>)>{
     res.push(((n/2..n),(0..n/2))); //q3
     res.push(((n/2..n),(n/2..n))); //q4
     
-
     res
-
-    // (p0_x,p0_y,p1_x,p1_y,p2_x,p2_y,p3_x,p3_y,p4_x,p4_y,p5_x,p5_y,
-    // p6_x,p6_y,p7_x,p7_y,p8_x,p8_y,p9_x,p9_y,p10_x,p10_y,p11_x,p11_y)
 }
-
-
 
 #[cfg(test)]
 mod tests {
