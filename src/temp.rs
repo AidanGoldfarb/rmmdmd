@@ -13,10 +13,8 @@ pub fn DT1(n:usize) -> Vec<Vec<f64>>{
             0 => { //q1
                 if DEBUG {println!("-----Q1-----");}
                 for i in xr.clone().collect::<Vec<usize>>().iter(){
-                    let mut col = 0;
                     for j in yr.clone().collect::<Vec<usize>>().iter(){
-                        res[*i][*j] = d1(n) - sum_n(col as f64,col);
-                        col += 1;
+                        res[*i][*j] = d1(n) - *j as f64;
                     }
                 }
             }
@@ -165,13 +163,51 @@ mod tests {
     use super::*;
 
     #[test]
-    fn verify_DT1() {
+    #[allow(non_snake_case)]
+    fn verify_DT1_2() {
+        let gt2 = vec![vec![38.0,35.0],vec![32.0,27.0]];
+        let res2 = DT1(2);
+
+        for (gt,res) in gt2.iter().zip(res2.clone()){
+            assert_eq!(res,*gt);
+        }
         
+
+    }
+    #[test]
+    #[allow(non_snake_case)]
+    fn verify_DT1_4() {
+        let gt4 = vec![vec![270.0,269.0,238.0,237.0],vec![270.0,269.0,240.0,239.0],vec![214.0,213.0,174.0,173.0], vec![214.0,213.0,176.0,175.0] ];
+        let res4 = DT1(4);
+
+        for (gt,res) in gt4.iter().zip(res4.clone()){
+            assert_eq!(res,*gt);
+        }
+
+    }
+    #[test]
+    #[allow(non_snake_case)]
+    fn verify_DT1_8() {
+        let gt8 = vec![
+                  vec![1982.0,1981.0,1980.0,1979.0,1718.0,1717.0,1716.0,1715.0],
+                  vec![1982.0,1981.0,1980.0,1979.0,1722.0,1721.0,1720.0,1719.0],
+                  vec![1982.0,1981.0,1980.0,1979.0,1726.0,1725.0,1724.0,1723.0],
+                  vec![1982.0,1981.0,1980.0,1979.0,1730.0,1729.0,1728.0,1727.0],
+                  vec![1502.0,1501.0,1500.0,1499.0,1206.0,1205.0,1204.0,1203.0],
+                  vec![1502.0,1501.0,1500.0,1499.0,1210.0,1209.0,1208.0,1207.0],
+                  vec![1502.0,1501.0,1500.0,1499.0,1214.0,1213.0,1212.0,1211.0],
+                  vec![1502.0,1501.0,1500.0,1499.0,1218.0,1217.0,1216.0,1215.0]
+                  ];
+        let res8 = DT1(8);
+        for (i,(gt,res)) in gt8.iter().zip(res8.clone()).enumerate(){
+            assert_eq!(res,*gt, "failed at row {}", i);
+        }
+        assert_eq!(res8,gt8);
     }
 
-    #[test]
-    fn verify_DT2() {
+    // #[test]
+    // fn verify_DT2() {
         
-    }
+    // }
 
 }
