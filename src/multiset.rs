@@ -5,8 +5,8 @@ use crate::temp::{*};
 pub fn multiset(n:usize) -> Vec<f64>{
     let mut res = Vec::new();
     for l in gen(n).iter(){
-        for i in 1..n{
-            for j in 1..n{
+        for i in 1..*l{
+            for j in 1..*l{
                 for k in 1..3{
                     match k{
                         1 => { //DT1

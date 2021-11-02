@@ -9,7 +9,7 @@ use multiset::*;
 fn main() {
     let n = 4;
     let _r = multiset(n);
-    println!("{:?}", _r);
+    println!("{:#?}", _r);
     // let dt1 = DT1(n);
     // let _dt2 = DT2(n);
     // for r in dt1 {
