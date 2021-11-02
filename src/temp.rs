@@ -54,9 +54,7 @@ pub fn DT1(n: usize) -> Vec<Vec<f64>> {
             }
             3 => {
                 //q4
-                if DEBUG {
-                    println!("-----Q4-----");
-                }
+                if DEBUG {println!("-----Q4-----");}
                 let factor = d2(n) - (n / 2.0) * (n / 2.0);
                 let mut row = 0;
                 for i in xr.clone().collect::<Vec<usize>>().iter() {

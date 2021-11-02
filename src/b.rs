@@ -1,4 +1,11 @@
 use crate::util::*;
+
+#[allow(unused, non_snake_case)]
+pub fn F_B(i:usize,j:usize,n:usize) -> f64{
+    g_T(i,j,n) + g_AB(i as f64,j as f64,n as f64)
+}
+
+
 /*
     (46) careful about sum bounds
 */
