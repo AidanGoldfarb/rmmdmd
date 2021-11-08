@@ -120,3 +120,32 @@ pub fn g_AB(i: f64, j: f64, n: f64) -> f64 {
 
     t1 + t2 + t3 + t4 + t5 + t6 + t7 + t8
 }
+
+
+#[cfg(test)]
+mod tests {
+    // Note this useful idiom: importing names from outer (for mod tests) scope.
+    use super::*;
+
+    //btn (46)
+    #[test]
+    fn verify_46(){
+        let gt = vec![6.0,52.0,428.0,3468.0];
+        let depth = vec![1,2,4,8];
+        for (t,n) in gt.iter().zip(depth.iter()){
+            assert_eq!(btn(*n), *t);
+        }
+    }
+
+    //btn (47)
+    #[test]
+    fn verify_47(){
+        let gt = vec![6.0,52.0,428.0,3468.0];
+        let depth = vec![1,2,4,8];
+        for (t,n) in gt.iter().zip(depth.iter()){
+            assert_eq!(t_N(0,0,*n), *t);
+        }
+    }
+
+
+}

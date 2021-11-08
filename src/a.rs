@@ -127,6 +127,16 @@ mod tests {
         }
     }
 
+    //atn (29)
+    #[test]
+    fn verify_29(){
+        let gt = vec![3.0,26.0,214.0,1734.0];
+        let depth = vec![1,2,4,8];
+        for (t,n) in gt.iter().zip(depth.iter()){
+            assert_eq!(atn(0,0,*n), *t);
+        }
+    }
+
     #[test]
     fn verify_table() {
         let n = vec![1.0, 2.0, 4.0, 8.0];
@@ -137,4 +147,25 @@ mod tests {
             assert_eq!(D(*val), dn_correct[i]);
         }
     }
+
+    // #[test]
+    // fn verify_atn_size_1() {
+    //     let gt = vec![3.0,4.0];
+    //     let res = 
+    // }
+
+    // #[test]
+    // fn verify_atn_size_2() {
+        
+    // }
+
+    // #[test]
+    // fn verify_atn_size_4() {
+        
+    // }
+
+    // #[test]
+    // fn verify_atn_size_8() {
+        
+    // }
 }
