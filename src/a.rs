@@ -185,7 +185,6 @@ mod tests {
 
 
     #[test]
-    #[ignore]
     fn verify_table() {
         let n = vec![1.0, 2.0, 4.0, 8.0];
         let tn_correct = vec![1.0, 12.0, 112.0, 960.0];
