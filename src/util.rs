@@ -66,6 +66,21 @@ pub fn d4(n: f64) -> f64 {
     // (((n/2.0).powf(2.0)-n) + ((n/2.0) + 1.0)))).floor()
 }
 
+#[allow(unused)]
+pub fn str_to_vec(input: &str) -> Vec<Vec<f64>>{
+    let mut res = Vec::new();
+    let split = input.split("\n").collect::<Vec<&str>>();
+    for r in split{
+        let mut row = Vec::new();
+        let tmp = r.split_whitespace().collect::<Vec<&str>>();
+        for ele in tmp{
+            row.push(ele.parse::<f64>().unwrap());
+        }
+        res.push(row);
+    }
+    res
+}
+
 #[cfg(test)]
 mod tests {
     // Note this useful idiom: importing names from outer (for mod tests) scope.

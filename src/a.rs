@@ -4,7 +4,7 @@ use crate::util::*;
     (29)
 */
 #[allow(unused)]
-pub fn my_atn(n: usize) -> f64 {
+pub fn atn(n: usize) -> f64 {
     let n = n as f64;
 
     let t1 = T(n);
@@ -22,14 +22,14 @@ pub fn my_atn(n: usize) -> f64 {
 }
 
 /*
-    (29)
+    (algo 1)
 */
 #[allow(unused)]
-pub fn atn(i: usize, j: usize, n: usize) -> f64 {
+pub fn algo1(i: usize, j: usize, n: usize) -> f64 {
     let mut i = i as f64;
     let mut j = j as f64;
     let n = n as f64;
-    let mut t: f64 = my_atn(n as usize); //0.0;
+    let mut t: f64 = atn(n as usize); //0.0;
     let mut n_temp: f64 = n as f64;
 
     if j > n {
@@ -52,21 +52,21 @@ pub fn atn(i: usize, j: usize, n: usize) -> f64 {
 /*
     (30) 
 */
-#[allow(unused)]
-pub fn atn_c(i: usize, j: usize, n: usize) -> f64 {
+#[allow(unused, non_snake_case)]
+pub fn t_N_a(i: usize, j: usize, n: usize) -> f64 {
     let i = i as f64;
     let j = j as f64;
-    let mut n = n as f64;
+    let n = n as f64;
+    
     let (mut t1, mut t2) = (0.0, 0.0);
-    let mut c = 0.0;
+    let (mut c, upper_bound) = (0.0, n.log2());
     t1 += (2.0_f64.powf(c).powf(2.0))
         * I((j - 1.0 % 2.0 * n) % 2.0_f64.powf(n + 1.0) + 1.0 > 2.0_f64.powf(n));
-    while n > 1.0 {
+    while c <= upper_bound {
         t1 += (2.0_f64.powf(c).powf(2.0))
             * I((j - 1.0 % 2.0 * n) % 2.0_f64.powf(c + 1.0) + 1.0 > 2.0_f64.powf(c));
         t2 += (2.0_f64.powf(c).powf(2.0))
             * I((i - 1.0 % 2.0 * n) % 2.0_f64.powf(c + 1.0) + 1.0 > 2.0_f64.powf(c));
-        n -= 1.0;
         c += 1.0;
     }
     t1 + t2
@@ -85,7 +85,7 @@ pub fn F_A(i: usize, j: usize, n: usize) -> f64 {
 */
 #[allow(unused, non_snake_case)]
 pub fn f_T(i: usize, j: usize, n: usize) -> f64 {
-    my_atn(n) + atn_c(i, j, n)
+    atn(n) + t_N_a(i, j, n)
 }
 
 /*
@@ -120,24 +120,72 @@ mod tests {
     // Note this useful idiom: importing names from outer (for mod tests) scope.
     use super::*;
     use pretty_assertions::{assert_eq};
+    use crate::util::str_to_vec;
+    
     #[test]
-    fn test_atn() {
-        for i in 0..50 {
-            assert_eq!(atn(0, 0, i), my_atn(i));
-        }
-    }
-
-    //atn (29)
-    #[test]
+    //atn (29) //Tested from mats (25)[0][0] .. (28)[0][0]
     fn verify_29(){
         let gt = vec![3.0,26.0,214.0,1734.0];
         let depth = vec![1,2,4,8];
         for (t,n) in gt.iter().zip(depth.iter()){
-            assert_eq!(atn(0,0,*n), *t);
+            assert_eq!(atn(*n), *t);
         }
     }
 
     #[test]
+    fn verify_30_sz_1(){
+        let bt1 = str_to_vec("3 4");
+        for (i,r) in bt1.iter().enumerate(){
+            for (j,c) in r.iter().enumerate(){
+                assert_eq!(t_N_a(i,j,1), *c)
+            }
+        }
+    }
+
+    #[test]
+    fn verify_30_sz_2(){
+        let bt2 = str_to_vec("26 27 30 31
+        28 29 32 33");
+        for (i,r) in bt2.iter().enumerate(){
+            for (j,c) in r.iter().enumerate(){
+                assert_eq!(t_N_a(i,j,2), *c)
+            }
+        }
+    }
+
+    #[test]
+    fn verify_30_sz_4(){
+        let bt4 = str_to_vec("214 215 218 219 230 231 234 235
+        216 217 220 221 232 233 236 237
+        222 223 226 227 238 239 242 243
+        224 225 228 229 240 241 244 245");
+        for (i,r) in bt4.iter().enumerate(){
+            for (j,c) in r.iter().enumerate(){
+                assert_eq!(t_N_a(i,j,4), *c)
+            }
+        }
+    }
+
+    #[test]
+    fn verify_30_sz_8(){
+        let bt8 = str_to_vec("1734 1735 1738 1739 1750 1751 1754 1755 1798 1799 1802 1803 1814 1815 1818 1819
+        1736 1737 1740 1741 1752 1753 1756 1757 1800 1801 1804 1805 1816 1817 1820 1821
+        1742 1743 1746 1747 1758 1759 1762 1763 1806 1807 1810 1811 1822 1823 1826 1827
+        1744 1745 1748 1749 1760 1761 1764 1765 1808 1809 1812 1813 1824 1825 1828 1829
+        1766 1767 1770 1771 1782 1783 1786 1787 1830 1831 1834 1835 1846 1847 1850 1851
+        1768 1769 1772 1773 1784 1785 1788 1789 1832 1833 1836 1837 1848 1849 1852 1853
+        1774 1775 1778 1779 1790 1791 1794 1795 1838 1839 1842 1843 1854 1855 1858 1859
+        1776 1777 1780 1781 1792 1973 1796 1797 1840 1841 1844 1845 1856 1857 1860 1861");
+        for (i,r) in bt8.iter().enumerate(){
+            for (j,c) in r.iter().enumerate(){
+                assert_eq!(t_N_a(i,j,8), *c)
+            }
+        }
+    }
+
+
+    #[test]
+    #[ignore]
     fn verify_table() {
         let n = vec![1.0, 2.0, 4.0, 8.0];
         let tn_correct = vec![1.0, 12.0, 112.0, 960.0];
@@ -148,24 +196,4 @@ mod tests {
         }
     }
 
-    // #[test]
-    // fn verify_atn_size_1() {
-    //     let gt = vec![3.0,4.0];
-    //     let res = 
-    // }
-
-    // #[test]
-    // fn verify_atn_size_2() {
-        
-    // }
-
-    // #[test]
-    // fn verify_atn_size_4() {
-        
-    // }
-
-    // #[test]
-    // fn verify_atn_size_8() {
-        
-    // }
 }
