@@ -7,25 +7,24 @@ pub fn F_B(i:usize,j:usize,n:usize) -> f64{
 
 
 /*
-    (46) careful about sum bounds
+    (46)
 */
 #[allow(unused)]
 pub fn btn(n: usize) -> f64 {
     let mut n = n as f64;
 
     let mut t3 = 0.0;
-    let mut count = 0.0;
-    while n > 2.0 {
+    let (mut count,t3_upper_bound) = (0.0,n.log2()-1.0);
+    while count <= t3_upper_bound {
         t3 += 4.0 * T(2.0_f64.powf(count));
-        n /= 2.0;
         count += 1.0;
     }
 
-    4.0 * T(n) + 2.0 * n * n - t3
+    (4.0 * T(n)) + (2.0 * n * n) - (t3)
 }
 
 /*
-    (47)
+    (47) SUM BOUNDS
 */
 #[allow(unused, non_snake_case)]
 pub fn t_N(i: usize, j: usize, n: usize) -> f64 {
@@ -34,20 +33,19 @@ pub fn t_N(i: usize, j: usize, n: usize) -> f64 {
     let n = n as f64;
 
     let mut t1 = 0.0;
-    let mut t1_upper_bound = (i % (2.0 * n)).ceil() - 1.0;
-    let mut count = 0.0;
-    while count < t1_upper_bound {
+    let (mut count,t1_upper_bound) = (0.0,(i % (2.0 * n)).log2().ceil() - 1.0);
+    while count <= t1_upper_bound {
         t1 += 4.0_f64.powf(count)
-            * I((((i % (n / 2.0)) - 1.0) % 2.0_f64.powf(count + 1.0)) + 1.0 > 2.0_f64.powf(count));
+            * I(((((i % (n / 2.0)) - 1.0) % 2.0_f64.powf(count + 1.0)) + 1.0) > 2.0_f64.powf(count));
         count += 1.0;
     }
 
     let mut t2 = 0.0;
-    let mut t2_upper_bound = (j % (2.0 * n)).ceil() - 1.0;
+    let mut t2_upper_bound = (j % (n / 2.0)).log2().ceil() - 1.0;
     count = 0.0;
-    while count < t2_upper_bound {
+    while count <= t2_upper_bound {
         t2 += 4.0_f64.powf(count)
-            * I((((j % (n / 2.0)) - 1.0) % 2.0_f64.powf(count + 1.0)) + 1.0 > 2.0_f64.powf(count));
+            * I(((((j % (n / 2.0)) - 1.0) % 2.0_f64.powf(count + 1.0)) + 1.0) > 2.0_f64.powf(count));
         count += 1.0;
     }
 
@@ -126,9 +124,11 @@ pub fn g_AB(i: f64, j: f64, n: f64) -> f64 {
 mod tests {
     // Note this useful idiom: importing names from outer (for mod tests) scope.
     use super::*;
-
-    //btn (46)
+    use pretty_assertions::{assert_eq};
+    
+    
     #[test]
+    //Tested from mats (42)[0][0] .. (44)[0][0]
     fn verify_46(){
         let gt = vec![6.0,52.0,428.0,3468.0];
         let depth = vec![1,2,4,8];
@@ -139,7 +139,7 @@ mod tests {
 
     //btn (47)
     #[test]
-    fn verify_47(){
+    fn verify_47(){ //TODO: test whole matrix
         let gt = vec![6.0,52.0,428.0,3468.0];
         let depth = vec![1,2,4,8];
         for (t,n) in gt.iter().zip(depth.iter()){

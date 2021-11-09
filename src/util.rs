@@ -58,7 +58,7 @@ pub fn d3(n: f64) -> f64 {
 }
 #[allow(unused)]
 pub fn d4(n: f64) -> f64 {
-    (D(n) - (4.0 * T(n / 2.0) - 2.0 * (n / 2.0).powf(2.0) + 2.0) - ((n / 2.0).powf(2.0) - n)
+    (D(n) - (2.0*(n/2.0).powf(2.0)) - (4.0 * T(n / 2.0) - 2.0 * (n / 2.0).powf(2.0) + 2.0) - ((n / 2.0).powf(2.0) - n)
         + (n / 2.0 + 1.0))
         .floor()
 
@@ -70,6 +70,7 @@ pub fn d4(n: f64) -> f64 {
 mod tests {
     // Note this useful idiom: importing names from outer (for mod tests) scope.
     use super::*;
+    use pretty_assertions::{assert_eq};
 
     #[test]
     fn verify_d1() {
@@ -91,8 +92,8 @@ mod tests {
 
     #[test]
     fn verify_d4() {
-        let correct = vec![2.0, 17.0, 97.0, 635.0];
-        let depth = vec![1.0, 2.0, 4.0, 8.0];
+        let correct = vec![17.0, 97.0, 635.0];
+        let depth = vec![2.0, 4.0, 8.0];
         for (c, index) in correct.iter().zip(depth.iter()) {
             assert_eq!(*c, d4(*index), "input: {}", *index);
         }

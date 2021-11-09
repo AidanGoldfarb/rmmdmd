@@ -181,6 +181,7 @@ pub fn init_ranges(n: &usize) -> Vec<(Range<usize>, Range<usize>)> {
 mod tests {
     // Note this useful idiom: importing names from outer (for mod tests) scope.
     use super::*;
+    use pretty_assertions::{assert_eq};
 
     #[test]
     #[allow(non_snake_case)]
@@ -243,8 +244,66 @@ mod tests {
         assert_eq!(res8, gt8);
     }
 
-    // #[test]
-    // fn verify_DT2() {
+    #[test]
+    #[allow(non_snake_case)]
+    fn verify_DT2_2() {
+        let gt2 = vec![vec![19.0, 17.0], vec![15.0, 11.0]];
+        let res2 = DT2(2);
 
-    // }
+        for (i,(gt, res)) in gt2.iter().zip(res2.clone()).enumerate() {
+            assert_eq!(res, *gt, "failed at row {}", i);
+        }
+    }
+
+    #[test]
+    #[allow(non_snake_case)]
+    fn verify_DT2_4() {
+        let gt4 = vec![
+            vec![127.0, 127.0, 97.0, 97.0],
+            vec![131.0, 131.0, 103.0, 103.0],
+            vec![79.0, 79.0, 41.0, 41.0],
+            vec![83.0, 83.0, 47.0, 47.0],
+        ];
+        let res4 = DT2(4);
+
+        for (i,(gt, res)) in gt4.iter().zip(res4.clone()).enumerate() {
+            assert_eq!(res, *gt, "failed at row {}", i);
+        }
+    }
+
+    #[test]
+    #[allow(non_snake_case)]
+    fn verify_DT2_8() {
+        let gt8 = vec![
+            vec![
+                895.0, 895.0, 895.0, 895.0, 635.0, 635.0, 635.0, 635.0,
+            ],
+            vec![
+                903.0, 903.0, 903.0, 903.0, 647.0, 647.0, 647.0, 647.0,
+            ],
+            vec![
+                911.0, 911.0, 911.0, 911.0, 659.0, 659.0, 659.0, 659.0,
+            ],
+            vec![
+                919.0, 919.0, 919.0, 919.0, 671.0, 671.0, 671.0, 671.0,
+            ],
+            vec![
+                447.0, 447.0, 447.0, 447.0, 155.0, 155.0, 155.0, 155.0,
+            ],
+            vec![
+                455.0, 455.0, 455.0, 455.0, 167.0, 167.0, 167.0, 167.0,
+            ],
+            vec![
+                463.0, 463.0, 463.0, 463.0, 179.0, 179.0, 179.0, 179.0,
+            ],
+            vec![
+                471.0, 471.0, 471.0, 471.0, 191.0, 191.0, 191.0, 191.0,
+            ],
+        ];
+        let res8 = DT2(8);
+        for (i, (gt, res)) in gt8.iter().zip(res8.clone()).enumerate() {
+            assert_eq!(res, *gt, "failed at row {}", i);
+        }
+        assert_eq!(res8, gt8);
+    }
 }

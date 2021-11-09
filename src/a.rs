@@ -50,7 +50,7 @@ pub fn atn(i: usize, j: usize, n: usize) -> f64 {
 }
 
 /*
-    (30)
+    (30) 
 */
 #[allow(unused)]
 pub fn atn_c(i: usize, j: usize, n: usize) -> f64 {
@@ -119,7 +119,7 @@ pub fn f_AB(i: f64, j: f64, n: f64) -> f64 {
 mod tests {
     // Note this useful idiom: importing names from outer (for mod tests) scope.
     use super::*;
-
+    use pretty_assertions::{assert_eq};
     #[test]
     fn test_atn() {
         for i in 0..50 {

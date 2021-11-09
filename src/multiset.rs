@@ -2,6 +2,7 @@ use crate::a::{*};
 use crate::b::{*};
 use crate::temp::{*};
 
+#[allow(unused)]
 pub fn multiset(n:usize) -> Vec<f64>{
     let mut res = Vec::new();
     for l in gen(n).iter(){
@@ -44,6 +45,8 @@ pub fn multiset(n:usize) -> Vec<f64>{
     res
 }
 
+
+#[allow(unused)]
 pub fn gen(n:usize) -> Vec<usize>{
     let mut res = Vec::new();
     let mut v = 2;

@@ -3,20 +3,18 @@ mod b;
 mod temp;
 mod util;
 mod multiset;
-//use a::{*};
-use multiset::*;
+use a::{*};
+//use b::{*};
+//use temp::{*};
+//use multiset::*;
+
 
 fn main() {
-    let n = 4;
-    let _r = multiset(n);
-    println!("{:#?}", _r);
-    // let dt1 = DT1(n);
-    // let _dt2 = DT2(n);
-    // for r in dt1 {
-    //     println!("{:?}", r);
-    // }
-    // println!("\n\n\n");
-    // for r in dt2{
-    //     println!("{:?}", r);
-    // }
+    // let n = 4;
+    // let _r = multiset(n);
+    // println!("{:#?}", _r);
+    println!("{}", atn_c(2,1,1));
+    println!("{}", atn_c(2,1,2));
+    println!("{}", atn_c(2,1,4));
+    println!("{}", atn_c(2,1,8));
 }
