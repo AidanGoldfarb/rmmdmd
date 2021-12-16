@@ -7,7 +7,7 @@ pub fn multiset(n:usize) -> Vec<f64>{
     let mut res = Vec::new();
     for l in gen(n).iter(){
         for i in 1..*l+1{
-            for j in 1..*l+1{
+            for j in 1..(*l*2)+1{
                 for k in 1..3{
                     match k{
                         1 => { //DT1
@@ -27,7 +27,7 @@ pub fn multiset(n:usize) -> Vec<f64>{
         }
     }
     for i in gen(n).iter(){
-        for j in 1..n{
+        for j in 1..n+1{
             for _k in 1..n{
                 let tmp = F_A(*i,j,n);
                 res.push(tmp);
@@ -35,7 +35,7 @@ pub fn multiset(n:usize) -> Vec<f64>{
         }
     }
     for i in gen(n).iter(){
-        for j in 1..n{
+        for j in 1..n+1{
             for _k in 1..n{
                 let tmp = F_B(*i,j,n);
                 res.push(tmp);

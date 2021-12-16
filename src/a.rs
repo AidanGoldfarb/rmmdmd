@@ -29,7 +29,7 @@ pub fn algo1(i: usize, j: usize, n: usize) -> f64 {
     let mut i = i as f64;
     let mut j = j as f64;
     let n = n as f64;
-    let mut t: f64 = atn(n as usize); //0.0;
+    let mut t: f64 = 0.0;//atn(n as usize); //0.0;
     let mut n_temp: f64 = n as f64;
 
     if j > n {
@@ -59,15 +59,17 @@ pub fn t_N_a(i: usize, j: usize, n: usize) -> f64 {
     let n = n as f64;
     
     let (mut t1, mut t2) = (0.0, 0.0);
-    let (mut c, upper_bound) = (0.0, n.log2());
-    t1 += (2.0_f64.powf(c).powf(2.0))
-        * I((j - 1.0 % 2.0 * n) % 2.0_f64.powf(n + 1.0) + 1.0 > 2.0_f64.powf(n));
-    while c <= upper_bound {
-        t1 += (2.0_f64.powf(c).powf(2.0))
-            * I((j - 1.0 % 2.0 * n) % 2.0_f64.powf(c + 1.0) + 1.0 > 2.0_f64.powf(c));
-        t2 += (2.0_f64.powf(c).powf(2.0))
-            * I((i - 1.0 % 2.0 * n) % 2.0_f64.powf(c + 1.0) + 1.0 > 2.0_f64.powf(c));
-        c += 1.0;
+    let (mut k, upper_bound) = (0.0, n.log2());
+    // t1 += (2.0_f64.powf(k).powf(2.0))
+    //     * I(((j - 1.0) % 2.0_f64.powf(k + 1.0)) + 1.0 > 2.0_f64.powf(0.0));
+    while k <= upper_bound {
+        //println!("i:{} j:{} k:{} IND: {}", i,j,k,I((((j - 1.0) % 2.0_f64.powf(k + 1.0)) + 1.0) > 2.0_f64.powf(k)));
+        t1 += (2.0_f64.powf(k).powf(2.0))
+            * I((((j - 1.0) % 2.0_f64.powf(k + 1.0)) + 1.0) > 2.0_f64.powf(k));
+        
+        t2 += (2.0_f64.powf(k).powf(2.0))
+            * I((((i - 1.0) % 2.0_f64.powf(k + 1.0)) + 1.0) > 2.0_f64.powf(k));
+        k += 1.0;
     }
     t1 + t2
 }
@@ -77,7 +79,7 @@ pub fn t_N_a(i: usize, j: usize, n: usize) -> f64 {
 */
 #[allow(unused, non_snake_case)]
 pub fn F_A(i: usize, j: usize, n: usize) -> f64 {
-    f_T(i, j, n) + f_AB(i as f64, j as f64, n as f64)
+    f_T(i, j, n) + f_AB(i as f64, (j as f64) % n as f64, n as f64)
 }
 
 /*
@@ -137,7 +139,7 @@ mod tests {
         let bt1 = str_to_vec("3 4");
         for (i,r) in bt1.iter().enumerate(){
             for (j,c) in r.iter().enumerate(){
-                assert_eq!(t_N_a(i,j,1), *c)
+                assert_eq!(t_N_a(i+1,j+1,1), *c,"failed on [{}][{}]", i,j)
             }
         }
     }
@@ -148,7 +150,7 @@ mod tests {
         28 29 32 33");
         for (i,r) in bt2.iter().enumerate(){
             for (j,c) in r.iter().enumerate(){
-                assert_eq!(t_N_a(i,j,2), *c)
+                assert_eq!(t_N_a(i+1,j+1,2), *c,"failed on [{}][{}]", i,j)
             }
         }
     }
@@ -161,7 +163,7 @@ mod tests {
         224 225 228 229 240 241 244 245");
         for (i,r) in bt4.iter().enumerate(){
             for (j,c) in r.iter().enumerate(){
-                assert_eq!(t_N_a(i,j,4), *c)
+                assert_eq!(t_N_a(i+1,j+1,4), *c,"failed on [{}][{}]", i,j)
             }
         }
     }
@@ -178,9 +180,55 @@ mod tests {
         1776 1777 1780 1781 1792 1973 1796 1797 1840 1841 1844 1845 1856 1857 1860 1861");
         for (i,r) in bt8.iter().enumerate(){
             for (j,c) in r.iter().enumerate(){
-                assert_eq!(t_N_a(i,j,8), *c)
+                assert_eq!(t_N_a(i+1,j+1,8), *c,"failed on [{}][{}]", i,j)
             }
         }
+    }
+
+    #[test]
+    fn verify_30_sz_8_compl(){ 
+        let bt8 = str_to_vec("1734 1735 1738 1739 1750 1751 1754 1755 1798 1799 1802 1803 1814 1815 1818 1819
+     1736 1737 1740 1741 1752 1753 1756 1757 1800 1801 1804 1805 1816 1817 1820 1821
+     1742 1743 1746 1747 1758 1759 1762 1763 1806 1807 1810 1811 1822 1823 1826 1827
+     1744 1745 1748 1749 1760 1761 1764 1765 1808 1809 1812 1813 1824 1825 1828 1829
+     1766 1767 1770 1771 1782 1783 1786 1787 1830 1831 1834 1835 1846 1847 1850 1851
+     1768 1769 1772 1773 1784 1785 1788 1789 1832 1833 1836 1837 1848 1849 1852 1853
+     1774 1775 1778 1779 1790 1791 1794 1795 1838 1839 1842 1843 1854 1855 1858 1859
+     1776 1777 1780 1781 1792 1973 1796 1797 1840 1841 1844 1845 1856 1857 1860 1861");
+        let mut correctness = vec![vec![false;16];8];
+        let mut values = vec![vec![0.0;16];8];
+        for (i,r) in bt8.iter().enumerate(){
+            for (j,c) in r.iter().enumerate(){
+                values[i][j] = algo1(i+1,j+1,8);
+                if algo1(i+1,j+1,8) == c - atn(8){
+                    correctness[i][j] = true;
+                }
+            }
+        }
+        for r in values{
+            println!("{:?}", r);
+        }
+        assert!(false);
+    }
+
+    #[test]
+    fn verify_30_sz_4_compl(){ 
+        let bt4 = str_to_vec("214 215 218 219 230 231 234 235
+        216 217 220 221 232 233 236 237
+        222 223 226 227 238 239 242 243
+        224 225 228 229 240 241 244 245");
+        let mut correctness = vec![vec![false;8];4];
+        for (i,r) in bt4.iter().enumerate(){
+            for (j,c) in r.iter().enumerate(){
+                if t_N_a(i+1,j+1,4) == c - atn(4){
+                    correctness[i][j] = true;
+                }
+            }
+        }
+        for r in correctness{
+            println!("{:?}", r);
+        }
+        assert!(false);
     }
 
 
@@ -195,4 +243,50 @@ mod tests {
         }
     }
 
+    #[test]
+    fn verify_30_gt(){ 
+        let sz = 8;
+        let bt = str_to_vec("1734 1735 1738 1739 1750 1751 1754 1755 1798 1799 1802 1803 1814 1815 1818 1819
+     1736 1737 1740 1741 1752 1753 1756 1757 1800 1801 1804 1805 1816 1817 1820 1821
+     1742 1743 1746 1747 1758 1759 1762 1763 1806 1807 1810 1811 1822 1823 1826 1827
+     1744 1745 1748 1749 1760 1761 1764 1765 1808 1809 1812 1813 1824 1825 1828 1829
+     1766 1767 1770 1771 1782 1783 1786 1787 1830 1831 1834 1835 1846 1847 1850 1851
+     1768 1769 1772 1773 1784 1785 1788 1789 1832 1833 1836 1837 1848 1849 1852 1853
+     1774 1775 1778 1779 1790 1791 1794 1795 1838 1839 1842 1843 1854 1855 1858 1859
+     1776 1777 1780 1781 1792 1973 1796 1797 1840 1841 1844 1845 1856 1857 1860 1861");
+        let mut correctness = vec![vec![false;2*sz];sz];
+        let mut values = vec![vec![0.0;2*sz];sz];
+        for (i,r) in bt.iter().enumerate(){
+            for (j,c) in r.iter().enumerate(){
+                values[i][j] = c - atn(sz);//algo1(i+1,j+1,8);
+                if algo1(i+1,j+1,sz) == c - atn(sz){
+                    correctness[i][j] = true;
+                }
+            }
+        }
+        for r in values{
+            println!("{:?}", r);
+        }
+        assert!(false);
+    }
+
+    #[test]
+    fn verify_30_sz_16(){ 
+        let sz = 16;
+        let bt = str_to_vec("");
+        let mut correctness = vec![vec![false;2*sz];sz];
+        let mut values = vec![vec![0.0;2*sz];sz];
+        for (i,r) in bt.iter().enumerate(){
+            for (j,c) in r.iter().enumerate(){
+                values[i][j] = algo1(i+1,j+1,8);
+                if algo1(i+1,j+1,sz) == c - atn(sz){
+                    correctness[i][j] = true;
+                }
+            }
+        }
+        for r in values{
+            println!("{:?}", r);
+        }
+        assert!(false);
+    }
 }

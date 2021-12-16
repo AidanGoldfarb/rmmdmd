@@ -85,16 +85,12 @@ pub fn DT2(n: usize) -> Vec<Vec<f64>> {
         match q {
             0 => {
                 //q1
-                if DEBUG {
-                    println!("-----Q1-----");
-                }
+                if DEBUG { println!("-----Q1-----"); }
+                let mut row = 0;
                 for i in xr.clone().collect::<Vec<usize>>().iter() {
-                    let mut row = 0;
                     for j in yr.clone().collect::<Vec<usize>>().iter() {
-                        if DEBUG {
-                            println!("applying d3 + sum(n) to: ({},{})", i, j);
-                        }
-                        res[*i][*j] = d3(n) + sum_n(n, row);
+                        if DEBUG { println!("applying d3 + sum(n) to: ({},{})", i, j); println!("sum: {}", n*row as f64);}
+                        res[*i][*j] = d3(n) + n*row as f64;
                     }
                     row += 1;
                 }
@@ -104,14 +100,12 @@ pub fn DT2(n: usize) -> Vec<Vec<f64>> {
                 if DEBUG {
                     println!("-----Q2-----");
                 }
+                let mut row = 0;
                 for i in xr.clone().collect::<Vec<usize>>().iter() {
-                    let mut row = 0;
                     for j in yr.clone().collect::<Vec<usize>>().iter() {
-                        if DEBUG {
-                            println!("applying d4 + sum(factor) to: ({},{})", i, j);
-                        }
+                        if DEBUG { println!("applying d4 + sum(factor) to: ({},{})", i, j); }
                         let factor = 6.0 * 2.0_f64.powf(n.log2() - 2.0);
-                        res[*i][*j] = d4(n) + sum_n(factor, row);
+                        res[*i][*j] = d4(n) + factor * row as f64;
                     }
                     row += 1;
                 }
@@ -121,30 +115,24 @@ pub fn DT2(n: usize) -> Vec<Vec<f64>> {
                 if DEBUG {
                     println!("-----Q3-----");
                 }
+                let mut row = 0;
                 for i in xr.clone().collect::<Vec<usize>>().iter() {
-                    let mut row = 0;
                     for j in yr.clone().collect::<Vec<usize>>().iter() {
-                        if DEBUG {
-                            println!("applying d3- lambda + sum(n) to: ({},{})", i, j);
-                        }
-                        res[*i][*j] = d3(n) - lambda(n) + sum_n(n, row);
+                        if DEBUG {println!("applying d3- lambda + sum(n) to: ({},{})", i, j);}
+                        res[*i][*j] = d3(n) - lambda(n) + n * row as f64;
                     }
                     row += 1;
                 }
             }
             3 => {
                 //q4
-                if DEBUG {
-                    println!("-----Q4-----");
-                }
+                if DEBUG {println!("-----Q4-----");}
+                let mut row = 0;
+                let factor = 6.0 * 2.0_f64.powf(n.log2() - 2.0);
                 for i in xr.clone().collect::<Vec<usize>>().iter() {
-                    let mut row = 0;
                     for j in yr.clone().collect::<Vec<usize>>().iter() {
-                        if DEBUG {
-                            println!("applying d4 - omega + sum(factor) to: ({},{})", i, j);
-                        }
-                        let factor = 6.0 * 2.0_f64.powf(n.log2() - 2.0);
-                        res[*i][*j] = d4(n) - omega(n) + sum_n(factor, row);
+                        if DEBUG {println!("applying d4 - omega + sum(factor) to: ({},{})", i, j);}
+                        res[*i][*j] = d4(n) - omega(n) + factor * row as f64;
                     }
                     row += 1;
                 }
@@ -247,7 +235,8 @@ mod tests {
     #[test]
     #[allow(non_snake_case)]
     fn verify_DT2_2() {
-        let gt2 = vec![vec![19.0, 17.0], vec![15.0, 11.0]];
+        let gt2 = str_to_vec("19 17
+        15 11");
         let res2 = DT2(2);
 
         for (i,(gt, res)) in gt2.iter().zip(res2.clone()).enumerate() {
@@ -258,17 +247,21 @@ mod tests {
     #[test]
     #[allow(non_snake_case)]
     fn verify_DT2_4() {
-        let gt4 = vec![
-            vec![127.0, 127.0, 97.0, 97.0],
-            vec![131.0, 131.0, 103.0, 103.0],
-            vec![79.0, 79.0, 41.0, 41.0],
-            vec![83.0, 83.0, 47.0, 47.0],
-        ];
+        let gt4 = str_to_vec("127 127 97 97 
+            131 131 103 103
+            79 79 41 41 
+            83 83 47 47");
         let res4 = DT2(4);
+        //let mut values = Vec::new();
 
         for (i,(gt, res)) in gt4.iter().zip(res4.clone()).enumerate() {
             assert_eq!(res, *gt, "failed at row {}", i);
+            //values.push(res);
         }
+        // for r in values{
+        //     println!("{:?}", r);
+        // }
+        // assert!(false);
     }
 
     #[test]
