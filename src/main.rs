@@ -4,17 +4,32 @@ mod temp;
 mod util;
 mod multiset;
 use a::{*};
-//use b::{*};
-//use temp::{*};
-//use multiset::*;
+// use b::{*};
+// use temp::{*};
+use multiset::*;
+use std::collections::HashMap;
+use std::fs::File;
+use std::io::prelude::*;
+use std::env;
+use itertools::Itertools;
 
 
 fn main() {
-    // let n = 4;
-    // let _r = multiset(n);
-    // println!("{:#?}", _r);
-    println!("{}", t_N_a(2,1,1));
-    println!("{}", t_N_a(2,1,2));
-    println!("{}", t_N_a(2,1,4));
-    println!("{}", t_N_a(2,1,8));
+    let args: Vec<String> = env::args().collect();
+    let sz = args[1].parse::<usize>().unwrap();
+    //let sz = 16;
+    let res = multiset(sz);
+    write_to_file(process(res));
+    //println!("{}", F_A(1,1,1));
+}
+
+pub fn write_to_file(hist: HashMap<usize,usize>){
+    let mut output = File::create("rust_output.txt").unwrap();
+    for k in hist.keys().sorted(){
+        write!(
+            output,
+            "{}: {}\n",
+            k,hist[k]
+        ).unwrap();
+    }
 }

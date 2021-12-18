@@ -4,19 +4,20 @@ const DEBUG: bool = false;
 
 #[allow(unused, non_snake_case)]
 pub fn DT1(n: usize) -> Vec<Vec<f64>> {
+    if n == 1{
+        return vec![vec![4.0]];
+    }
     let mut res = vec![vec![0.0; n]; n];
     let ranges = init_ranges(&n);
-    let n = n as f64;
+    //let n = n as f64;
     for (q, (xr, yr)) in ranges.iter().enumerate() {
         match q {
             0 => {
                 //q1
-                if DEBUG {
-                    println!("-----Q1-----");
-                }
+                if DEBUG {println!("-----Q1-----");}
                 for i in xr.clone().collect::<Vec<usize>>().iter() {
                     for j in yr.clone().collect::<Vec<usize>>().iter() {
-                        res[*i][*j] = d1(n) - *j as f64;
+                        res[*i][*j] = d1(n as f64) - *j as f64;
                     }
                 }
             }
@@ -25,16 +26,16 @@ pub fn DT1(n: usize) -> Vec<Vec<f64>> {
                 if DEBUG {
                     println!("-----Q2-----");
                 }
-                let factor = d2(n) - (n / 2.0) * (n / 2.0);
+                let factor = d2(n as f64) as usize - (n / 2) * (n / 2);
                 for i in xr.clone().collect::<Vec<usize>>().iter() {
-                    let mut col = 0.0;
+                    let mut col = 0;
                     for j in yr.clone().collect::<Vec<usize>>().iter() {
                         if DEBUG {
                             println!("applying d2 - (n/2)^2 + (n-col)  to: ({},{})", i, j);
                         }
-                        let col_factor = n / 2.0 - col;
-                        res[*i][*j] = factor + sum_n(n / 2.0, *i) + col_factor - 1.0;
-                        col += 1.0;
+                        let col_factor = n / 2 - col;
+                        res[*i][*j] = (factor + sum_n((n / 2) as f64, *i) as usize + col_factor - 1) as f64;
+                        col += 1;
                     }
                 }
             }
@@ -47,7 +48,7 @@ pub fn DT1(n: usize) -> Vec<Vec<f64>> {
                 for i in xr.clone().collect::<Vec<usize>>().iter() {
                     let mut col = 0;
                     for j in yr.clone().collect::<Vec<usize>>().iter() {
-                        res[*i][*j] = d1(n) - phi(n) - col as f64;
+                        res[*i][*j] = d1(n as f64) - phi(n as f64) - col as f64;
                         col += 1;
                     }
                 }
@@ -55,17 +56,17 @@ pub fn DT1(n: usize) -> Vec<Vec<f64>> {
             3 => {
                 //q4
                 if DEBUG {println!("-----Q4-----");}
-                let factor = d2(n) - (n / 2.0) * (n / 2.0);
+                let factor = d2(n as f64) as usize- (n / 2) * (n / 2);
                 let mut row = 0;
                 for i in xr.clone().collect::<Vec<usize>>().iter() {
-                    let mut col = 0.0;
+                    let mut col = 0;
                     for j in yr.clone().collect::<Vec<usize>>().iter() {
                         if DEBUG {
                             println!("applying   to: ({},{})", i, j);
                         }
-                        let col_factor = n / 2.0 - col;
-                        res[*i][*j] = factor - delta(n) + sum_n(n / 2.0, row) + col_factor - 1.0;
-                        col += 1.0;
+                        let col_factor = n / 2 - col;
+                        res[*i][*j] = (factor - delta(n as f64) as usize + sum_n((n / 2) as f64, row) as usize + col_factor - 1) as f64;
+                        col += 1;
                     }
                     row += 1;
                 }
@@ -78,6 +79,9 @@ pub fn DT1(n: usize) -> Vec<Vec<f64>> {
 
 #[allow(unused, non_snake_case)]
 pub fn DT2(n: usize) -> Vec<Vec<f64>> {
+    if n == 1{
+        return vec![vec![2.0]];
+    }
     let mut res = vec![vec![0.0; n]; n];
     let ranges = init_ranges(&n);
     let n = n as f64;
@@ -170,6 +174,18 @@ mod tests {
     // Note this useful idiom: importing names from outer (for mod tests) scope.
     use super::*;
     use pretty_assertions::{assert_eq};
+
+    #[test]
+    #[allow(non_snake_case)]
+    fn verify_DT1_1() {
+        let gt2 = vec![4.0];
+        let res2 = DT1(1);
+        assert_eq!(res2[0][0],4.0);
+        //assert_eq!(res2[1][0],4.0);
+        // for (gt, res) in gt2.iter().zip(res2.clone()) {
+        //     assert_eq!(res, *gt);
+        // }
+    }
 
     #[test]
     #[allow(non_snake_case)]

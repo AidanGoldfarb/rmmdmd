@@ -5,6 +5,9 @@ use crate::util::*;
 */
 #[allow(unused)]
 pub fn atn(n: usize) -> f64 {
+    if n == 1{
+        return 3.0;
+    }
     let n = n as f64;
 
     let t1 = T(n);
@@ -74,26 +77,12 @@ pub fn t_N_a(i: usize, j: usize, n: usize) -> f64 {
     t1 + 2.0*t2
 }
 
-// pub fn t_N_a(i: usize, j: usize, n: usize) -> f64{
-//     let mut row1 = Vec::new();
-//     for j in 0..n*2{
-//         row1.push(t_N_a_row1(1,j,n));
-//     }
-//     //println!("HEYY{:?}", row1);
-//     if i <= 1{
-//         row1[j-1]
-//     }
-//     else{
-//         row1[j-1] + 2.0*(row1[i-1] - row1[0])
-//     }
-// }
-
-
 /*
     (23)
 */
 #[allow(unused, non_snake_case)]
 pub fn F_A(i: usize, j: usize, n: usize) -> f64 {
+    //println!("f_T: {}\nf_AB: {}", f_T(i, j, n), f_AB(i as f64, (j as f64) % n as f64, n as f64));
     f_T(i, j, n) + f_AB(i as f64, (j as f64) % n as f64, n as f64)
 }
 
@@ -112,6 +101,9 @@ pub fn f_T(i: usize, j: usize, n: usize) -> f64 {
 pub fn f_AB(i: f64, j: f64, n: f64) -> f64 {
     if n < 1.0 {
         return 0.0;
+    }
+    if n == 1.0 {
+        return 4.0;
     }
 
     let t1 = 4.0*n*n * (n/2.0).powf(2.0) * I((n/4.0 < i && i <= n/2.0) && j <= n/2.0);
@@ -327,5 +319,10 @@ mod tests {
         //     println!("{:?}", r);
         // }
         // assert!(false);
+    }
+
+    #[test]
+    fn verify_41(){
+        assert!(false);
     }
 }
