@@ -81,6 +81,7 @@ pub fn process(input: Vec<f64>) -> HashMap<usize,usize>{
     dist
 }
 
+#[allow(dead_code)]
 pub fn reuse_distance(trace: Vec<f64>) -> HashMap<usize, usize> {
     let mut stack = Vec::new();
     let mut freq_map: HashMap<usize,usize> = HashMap::new();

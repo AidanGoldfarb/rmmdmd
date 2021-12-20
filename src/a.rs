@@ -99,6 +99,7 @@ pub fn f_T(i: usize, j: usize, n: usize) -> f64 {
 */
 #[allow(unused, non_snake_case)]
 pub fn f_AB(i: f64, j: f64, n: f64) -> f64 {
+    
     if n < 1.0 {
         return 0.0;
     }
@@ -322,7 +323,80 @@ mod tests {
     }
 
     #[test]
-    fn verify_41(){
+    fn verify_41_sz_1(){
+        let gt = vec![4.0];
+        assert_eq!(f_AB(0.0,0.0,1.0), gt[0]);
+    }
+
+    #[test]
+    fn verify_41_sz_2(){
+        let gt = str_to_vec("16 17
+        18 17");
+        let sz = 2;
+        for (i,r) in gt.iter().enumerate(){
+            for (j,c) in r.iter().enumerate(){
+                assert_eq!(f_AB((i+1) as f64,(j+1) as f64,sz as f64), *c);
+            }
+        }
+    }
+
+    #[test]
+    fn verify_41_sz_4(){
+        let gt = str_to_vec("64 65 68 69
+        68 68 72 72
+        72 72 68 68
+        70 69 66 65");
+        let sz = 4;
+        for (i,r) in gt.iter().enumerate(){
+            for (j,c) in r.iter().enumerate(){
+                assert_eq!(f_AB((i+1) as f64,(j+1) as f64,sz as f64), *c);
+            }
+        }
+    }
+
+    #[test]
+    fn verify_41_sz_8(){
+        let gt = str_to_vec("256 257 260 261 272 273 276 277
+        260 260 264 264 276 276 280 280
+        272 272 272 272 288 288 288 288
+        272 272 272 272 288 288 288 288
+        288 288 288 288 272 272 272 272
+        288 288 288 288 272 272 272 272
+        280 280 276 276 264 264 260 260
+        278 277 274 273 262 261 258 257");
+        let sz = 8;
+        for (i,r) in gt.iter().enumerate(){
+            for (j,c) in r.iter().enumerate(){
+                assert_eq!(f_AB((i+1) as f64,(j+1) as f64,sz as f64), *c);
+            }
+        }
+    }
+
+    #[test]
+    fn verify_41_sz_8_compl(){
+        let gt = str_to_vec("256 257 260 261 272 273 276 277
+        260 260 264 264 276 276 280 280
+        272 272 272 272 288 288 288 288
+        272 272 272 272 288 288 288 288
+        288 288 288 288 272 272 272 272
+        288 288 288 288 272 272 272 272
+        280 280 276 276 264 264 260 260
+        278 277 274 273 262 261 258 257");
+        let sz = 8;
+        let mut correct = vec![vec![false;8];8];
+        let mut values = vec![vec![0.0;8];8];
+        for (i,r) in gt.iter().enumerate(){
+            for (j,c) in r.iter().enumerate(){
+                values[i][j] = f_AB((i+1) as f64,(j+1) as f64,sz as f64);
+                if f_AB((i+1) as f64,(j+1) as f64,sz as f64) == *c{
+                    correct[i][j] = true;
+                }
+                //assert_eq!(f_AB((i+1) as f64,(j+1) as f64,sz as f64), gt[i][j]);
+            }
+        }
+        for r in values{
+            println!("{:?}", r);
+        }
         assert!(false);
     }
 }

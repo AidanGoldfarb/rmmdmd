@@ -178,7 +178,7 @@ mod tests {
     #[test]
     #[allow(non_snake_case)]
     fn verify_DT1_1() {
-        let gt2 = vec![4.0];
+        //let gt2 = vec![4.0];
         let res2 = DT1(1);
         assert_eq!(res2[0][0],4.0);
         //assert_eq!(res2[1][0],4.0);
