@@ -2,7 +2,7 @@ use crate::util::*;
 
 #[allow(unused, non_snake_case)]
 pub fn F_B(i:usize,j:usize,n:usize) -> f64{
-    g_T(i,j,n) + g_AB((i as f64) % n as f64,j as f64,n as f64)
+    g_T(i,j%n,n) + g_AB((i as f64),j as f64,n as f64) + 3.0 * 2.0_f64.powf(2.0 * (n as f64).log2() + 1.0)
 }
 
 
@@ -100,28 +100,36 @@ pub fn g_T(i: usize, j: usize, n: usize) -> f64 {
 }
 
 /*
-    (56)
+    (58)
 */
-#[allow(unused, non_snake_case)]
+#[allow(unused, non_snake_case,illegal_floating_point_literal_pattern)]
 pub fn g_AB(i: f64, j: f64, n: f64) -> f64 {
     if n < 1.0 {
         return 0.0;
     }
-
-    let t1 = 3.0 * 2.0_f64.powf(2.0 * n.log2() + 1.0)
-        + (2.0_f64.powf(2.0 * n.log2() - 1.0)) * I(i <= n / 2.0 && n / 4.0 < j && j <= n / 2.0);
-    let t2 = (3.0 * 2.0_f64.powf(2.0 * n.log2() - 1.0))
-        * I(i <= n / 2.0 && n / 2.0 < j && j <= 3.0 * n / 4.0);
-    let t3 = (3.0 * 2.0_f64.powf(2.0 * n.log2() - 1.0))
-        * I(n / 2.0 < i && i <= n && n / 4.0 < j && j <= n / 2.0);
-    let t4 = (2.0_f64.powf(2.0 * n.log2() - 1.0))
-        * I(n / 2.0 < i && i < n && n / 2.0 < j && j <= 3.0 * n / 4.0);
-    let t5 = I(i <= n / 2.0 && j <= n / 4.0) * g_AB(i, j, n / 2.0);
-    let t6 = I(n / 2.0 < i && i <= n && j <= n / 4.0) * (n * n + g_AB(i - n / 2.0, j, n / 2.0));
+    if n == 2.0 {
+        return match (i,j){
+            (1.0,1.0) => 1.0,
+            (1.0,2.0) => 1.0,
+            (2.0,1.0) => 2.0,
+            (2.0,2.0) => 0.0,
+            (_,_) => -1.0,
+        }
+    }
+    //3.0 * 2.0_f64.powf(2.0 * n.log2() + 1.0) +
+    let t1 =  (n*n/2.0) * I(i <= n && n / 2.0 < j && j <= n);
+    let t2 = (3.0 * n*n/2.0)
+        * I(i <= n && n < j && j <= 3.0 * n / 2.0);
+    let t3 = (3.0 * n*n/2.0) 
+        * I(n < i && i <= 2.0*n && n / 2.0 < j && j <= n);
+    let t4 = (n*n/2.0)
+        * I(n < i && i <= 2.0*n && n < j && j <= 3.0 * n / 2.0);
+    let t5 = I(i <= n && j <= n / 2.0) * g_AB(i-n/2.0, j-n/2.0, n / 2.0);
+    let t6 = I(n < i && i <= 2.0*n && j <= n / 2.0) * (n * n + g_AB(i - n, j-n/2.0, n / 2.0));
     let t7 =
-        I(i <= n / 2.0 && 3.0 * n / 4.0 < j && j <= n) * (n * n + g_AB(i, j - n / 2.0, n / 2.0));
-    let t8 = I(n / 2.0 < i && i <= n && 3.0 * n / 4.0 < j && j <= n)
-        * g_AB(i - n / 2.0, j - n / 2.0, n / 2.0);
+        I(i <= n / 2.0 && 3.0 * n / 2.0 < j && j <= 2.0*n) * (n * n + g_AB(i - n/2.0, j - n, n / 2.0));
+    let t8 = I(n < i && i <= n && 3.0 * n / 2.0 < j && j <= 2.0*n)
+        * g_AB(i - n, j - n, n / 2.0);
 
     t1 + t2 + t3 + t4 + t5 + t6 + t7 + t8
 }
@@ -271,8 +279,74 @@ mod tests {
     }
 
     #[test]
-    #[ignore]
-    fn verify_56(){
+    fn verify_58_sz_1(){
+        let gt = str_to_vec("7 7
+        8 6");
+        let sz = 1;
+        for (i,r) in gt.iter().enumerate(){
+            for (j,c) in r.iter().enumerate(){
+                assert_eq!((6*sz*sz) as f64+g_AB((i+1) as f64,(j+1) as f64,sz as f64), *c);
+            }
+        }
+    }
+
+    #[test]
+    fn verify_58_sz_2(){
+        let gt = str_to_vec("25 26 30 29
+        26 26 30 28
+        29 30 26 25
+        30 30 26 24");
+        let sz = 2;
+        for (i,r) in gt.iter().enumerate(){
+            for (j,c) in r.iter().enumerate(){
+                assert_eq!((6*sz*sz) as f64+g_AB((i+1) as f64,(j+1) as f64,sz as f64), *c);
+            }
+        }
+    }
+
+    #[test]
+    fn verify_58_sz_4(){
+        let gt = str_to_vec("97 98 104 104 120 120 118 117
+        98 98 104 104 120 120 118 116
+        101 102 104 104 120 120 114 113
+        102 102 104 104 120 120 114 112
+        113 114 120 120 104 104 102 101
+        114 114 120 120 104 104 102 100
+        117 118 120 120 104 104 98 97
+        118 118 120 120 104 104 98 96");
+        let sz = 4;
+        for (i,r) in gt.iter().enumerate(){
+            for (j,c) in r.iter().enumerate(){
+                assert_eq!((6*sz*sz) as f64+g_AB((i+1) as f64,(j+1) as f64,sz as f64), *c);
+            }
+        }
+    }
+
+    #[test]
+    fn verify_58_sz_4_compl(){
+        let gt = str_to_vec("97 98 104 104 120 120 118 117
+        98 98 104 104 120 120 118 116
+        101 102 104 104 120 120 114 113
+        102 102 104 104 120 120 114 112
+        113 114 120 120 104 104 102 101
+        114 114 120 120 104 104 102 100
+        117 118 120 120 104 104 98 97
+        118 118 120 120 104 104 98 96");
+        let sz = 4;
+        let mut correct = vec![vec![false;2*sz];2*sz];
+        let mut values = vec![vec![0.0;2*sz];2*sz];
+        for (i,r) in gt.iter().enumerate(){
+            for (j,c) in r.iter().enumerate(){
+                values[i][j] = (6*sz*sz) as f64+ g_AB((i+1) as f64,(j+1) as f64,sz as f64);
+                if (6*sz*sz) as f64+ g_AB((i+1) as f64,(j+1) as f64,sz as f64) == *c{
+                    correct[i][j] = true;
+                }
+                //assert_eq!(f_AB((i+1) as f64,(j+1) as f64,sz as f64), gt[i][j]);
+            }
+        }
+        for r in values{
+            println!("{:?}", r);
+        }
         assert!(false);
     }
 }

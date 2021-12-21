@@ -46,8 +46,8 @@ pub fn multiset(n:usize) -> Vec<f64>{
     }   
     for l in gen(n).iter(){
         for i in 1..(*l*2)+1{
-            for j in 1..*l+1{
-                for _ in 0..(n*n*n/(4*l*l*l)){
+            for j in 1..(*l*2)+1{
+                for _ in 0..(n*n*n/(8*l*l*l)){
                     res.push(F_B(i,j,*l));
                 } 
             }

@@ -113,4 +113,10 @@ mod tests {
             assert_eq!(*c, d4(*index), "input: {}", *index);
         }
     }
+
+    #[test]
+    fn verify_I(){
+        assert_eq!(0.0, I(false));
+        assert_eq!(1.0, I(true));
+    }
 }
