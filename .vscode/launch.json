@@ -11,7 +11,7 @@
             "name": "Debug executable 'rmmdmd'",
             "cargo": {
                 "args": [
-                    "run",
+                    "r",
                 ],
             },
             "args": [],

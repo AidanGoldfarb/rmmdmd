@@ -1,9 +1,12 @@
 use crate::util::*;
 
+/*
+    (24)
+*/
 #[allow(unused, non_snake_case)]
 pub fn F_B(i:usize,j:usize,n:usize) -> f64{
-    //println!("{} + {}", g_T(i,j%n,n), g_AB((i as f64),j as f64,n as f64));
-    g_T(i,j%n,n) + g_AB((i as f64),j as f64,n as f64)
+    //println!("F_B = g_T + g_AB\nF_B = {} + {}\n", g_T(i,j%n,n), g_AB((i as f64),j as f64,n as f64));
+    g_T(i,((j-1)%n)+1,n) + g_AB((i as f64),j as f64,n as f64)
 
 }
 /*
@@ -53,81 +56,84 @@ pub fn t_N(i: usize, j: usize, n: usize) -> f64 {
 }
 
 //VERIFY ME
+/*
+    (50)
+*/
 pub fn g_T(i: usize, j: usize, n: usize) -> f64 {
-    println!("{} + {}", btn(n) , t_N(i,j,n));
+    println!("g_T = btn + t_N\ng_T = {} + {}\n", btn(n) , t_N(i,j,n));
     btn(n) + t_N(i,j,n)
 }
 
 /*
     (50)
 */
-#[allow(unused, non_snake_case)]
-pub fn g_T_helper(i: usize, j: usize, n: usize) -> f64 {
-    let i = i as f64;
-    let j = j as f64;
-    let n = n as f64;
+// #[allow(unused, non_snake_case)]
+// pub fn g_T_helper(i: usize, j: usize, n: usize) -> f64 {
+//     let i = i as f64;
+//     let j = j as f64;
+//     let n = n as f64;
 
-    let mut t1 = 0.0;
-    let (mut count,t1_upper_bound) = (0.0,(n).log2().ceil());
-    // println!("bound: {}", t1_upper_bound);
-    while count <= t1_upper_bound {
-        //println!("hiiiiiiii");
-        t1 += 4.0_f64.powf(count)
-            * I((((i  - 1.0) % 2.0_f64.powf(count + 1.0)) + 1.0) > 2.0_f64.powf(count));
-        //println!("HII{}", I(((((i % (2.0*n)) - 1.0) % 2.0_f64.powf(count + 1.0)) + 1.0) > 2.0_f64.powf(count)));
-        count += 1.0;
-    }
+//     let mut t1 = 0.0;
+//     let (mut count,t1_upper_bound) = (0.0,(n).log2().ceil());
+//     // println!("bound: {}", t1_upper_bound);
+//     while count <= t1_upper_bound {
+//         //println!("hiiiiiiii");
+//         t1 += 4.0_f64.powf(count)
+//             * I((((i  - 1.0) % 2.0_f64.powf(count + 1.0)) + 1.0) > 2.0_f64.powf(count));
+//         //println!("HII{}", I(((((i % (2.0*n)) - 1.0) % 2.0_f64.powf(count + 1.0)) + 1.0) > 2.0_f64.powf(count)));
+//         count += 1.0;
+//     }
 
-    let mut t2 = 0.0;
-    //let mut t2_upper_bound = (j % n).log2().ceil();
-    let mut t2_upper_bound = (n).log2().ceil();
-   // println!("bound: {}", t2_upper_bound);
-    count = 0.0;
-    while count <= t2_upper_bound {
-        t2 += 4.0_f64.powf(count)
-            * I((((j - 1.0) % 2.0_f64.powf(count + 1.0)) + 1.0) > 2.0_f64.powf(count));
-            //println!("j:{}, n:{}, k:{}, IND:{} ",j,n,count,I(((((j % n) - 1.0) % 2.0_f64.powf(count + 1.0)) + 1.0) > 2.0_f64.powf(count)));
-        count += 1.0;
-        //println!("t2: {}", t2);
-    }
+//     let mut t2 = 0.0;
+//     //let mut t2_upper_bound = (j % n).log2().ceil();
+//     let mut t2_upper_bound = (n).log2().ceil();
+//    // println!("bound: {}", t2_upper_bound);
+//     count = 0.0;
+//     while count <= t2_upper_bound {
+//         t2 += 4.0_f64.powf(count)
+//             * I((((j - 1.0) % 2.0_f64.powf(count + 1.0)) + 1.0) > 2.0_f64.powf(count));
+//             //println!("j:{}, n:{}, k:{}, IND:{} ",j,n,count,I(((((j % n) - 1.0) % 2.0_f64.powf(count + 1.0)) + 1.0) > 2.0_f64.powf(count)));
+//         count += 1.0;
+//         //println!("t2: {}", t2);
+//     }
 
-    t1 + t2
-    // let i = i as f64;
-    // let j = j as f64;
-    // let n = n as f64;
+//     t1 + t2
+//     // let i = i as f64;
+//     // let j = j as f64;
+//     // let n = n as f64;
 
-    // let t1 = 4.0 * T(n) + 2.0 * n * n;
+//     // let t1 = 4.0 * T(n) + 2.0 * n * n;
 
-    // let mut t2 = 0.0;
-    // let t2_upper_bound = n.log2() - 1.0;
-    // let mut k = 0.0;
-    // while k < t2_upper_bound {
-    //     t2 += 4.0 * T(2.0_f64.powf(k));
-    //     k += 1.0;
-    // }
+//     // let mut t2 = 0.0;
+//     // let t2_upper_bound = n.log2() - 1.0;
+//     // let mut k = 0.0;
+//     // while k < t2_upper_bound {
+//     //     t2 += 4.0 * T(2.0_f64.powf(k));
+//     //     k += 1.0;
+//     // }
 
-    // let mut t3 = 0.0;
-    // // let t3_upper_bound = ((i % 2.0 * n).log2()).ceil() - 1.0;
-    // let t3_upper_bound = (n.log2()).ceil();
-    // k = 0.0;
-    // while k < t3_upper_bound {
-    //     t3 += 4.0_f64.powf(k)
-    //         * I(((i - 1.0) % 2.0_f64.powf(k + 1.0)) + 1.0 > 2.0_f64.powf(k));
-    //     k += 1.0;
-    // }
+//     // let mut t3 = 0.0;
+//     // // let t3_upper_bound = ((i % 2.0 * n).log2()).ceil() - 1.0;
+//     // let t3_upper_bound = (n.log2()).ceil();
+//     // k = 0.0;
+//     // while k < t3_upper_bound {
+//     //     t3 += 4.0_f64.powf(k)
+//     //         * I(((i - 1.0) % 2.0_f64.powf(k + 1.0)) + 1.0 > 2.0_f64.powf(k));
+//     //     k += 1.0;
+//     // }
 
-    // let mut t4 = 0.0;
-    // //let t4_upper_bound = ((j % 2.0 * n).log2()).ceil() - 1.0;
-    // let t4_upper_bound = (n.log2()).ceil();
-    // k = 0.0;
-    // while k < t3_upper_bound {
-    //     t4 += 4.0_f64.powf(k)
-    //         * I(((j - 1.0) % 2.0_f64.powf(k + 1.0)) + 1.0 > 2.0_f64.powf(k));
-    //     k += 1.0;
-    // }
+//     // let mut t4 = 0.0;
+//     // //let t4_upper_bound = ((j % 2.0 * n).log2()).ceil() - 1.0;
+//     // let t4_upper_bound = (n.log2()).ceil();
+//     // k = 0.0;
+//     // while k < t3_upper_bound {
+//     //     t4 += 4.0_f64.powf(k)
+//     //         * I(((j - 1.0) % 2.0_f64.powf(k + 1.0)) + 1.0 > 2.0_f64.powf(k));
+//     //     k += 1.0;
+//     // }
 
-    // t1 + t2 + t3 + t4
-}
+//     // t1 + t2 + t3 + t4
+// }
 
 
 /*
@@ -205,7 +211,7 @@ mod tests {
 
     //tn (49)
     #[test]
-    fn verify_47_sz_1(){ //TODO: test whole matrix
+    fn verify_49_sz_1(){ //TODO: test whole matrix
         let bt1 = vec![vec![6.0],vec![7.0]];
         for (i,r) in bt1.iter().enumerate(){
             for (j,c) in r.iter().enumerate(){
@@ -216,7 +222,7 @@ mod tests {
 
     #[test]
     #[ignore]
-    fn verify_47_edge(){
+    fn verify_49_edge(){
         let bt4 = str_to_vec("428 429 432 433
         429 430 433 434
         432 433 436 437
@@ -230,7 +236,7 @@ mod tests {
 
     #[test]
     #[ignore]
-    fn verify_47_sz_8_compl(){ //TODO: test whole matrix
+    fn verify_49_sz_8_compl(){ //TODO: test whole matrix
         let bt8 = str_to_vec("3468 3469 3472 3473 3484 3485 3488 3489
         3469 3470 3473 3474 3485 3486 3489 3490
         3472 3473 3476 3477 3488 3489 3492 3493
@@ -263,7 +269,7 @@ mod tests {
 
     //tn (47)
     #[test]
-    fn verify_47_sz_2(){ //TODO: test whole matrix
+    fn verify_49_sz_2(){ //TODO: test whole matrix
         let bt2 = str_to_vec("52 53
         53 54
         56 57
@@ -277,7 +283,7 @@ mod tests {
 
     //tn (47)
     #[test]
-    fn verify_47_sz_4(){ //TODO: test whole matrix
+    fn verify_49_sz_4(){ //TODO: test whole matrix
         let bt4 = str_to_vec("428 429 432 433
         429 430 433 434
         432 433 436 437
@@ -387,34 +393,35 @@ mod tests {
         }
     }
 
-    // #[test]
-    // fn verify_58_sz_4_compl(){
-    //     let gt = str_to_vec("97 98 104 104 120 120 118 117
-    //     98 98 104 104 120 120 118 116
-    //     101 102 104 104 120 120 114 113
-    //     102 102 104 104 120 120 114 112
-    //     113 114 120 120 104 104 102 101
-    //     114 114 120 120 104 104 102 100
-    //     117 118 120 120 104 104 98 97
-    //     118 118 120 120 104 104 98 96");
-    //     let sz = 4;
-    //     let mut correct = vec![vec![false;2*sz];2*sz];
-    //     let mut values = vec![vec![0.0;2*sz];2*sz];
-    //     for (i,r) in gt.iter().enumerate(){
-    //         for (j,c) in r.iter().enumerate(){
-    //             values[i][j] = g_AB((i+1) as f64,(j+1) as f64,sz as f64);
-    //             if g_AB((i+1) as f64,(j+1) as f64,sz as f64) == *c{
-    //                 correct[i][j] = true;
-    //             }
-    //             //assert_eq!(f_AB((i+1) as f64,(j+1) as f64,sz as f64), gt[i][j]);
-    //         }
-    //     }
-    //     for r in correct{
-    //         println!("{:?}", r);
-    //     }
-    //     for r in values{
-    //         println!("{:?}", r);
-    //     }
-    //     assert!(false);
-    // }
+    #[test]
+    #[ignore]
+    fn verify_58_sz_4_compl(){
+        let gt = str_to_vec("97 98 104 104 120 120 118 117
+        98 98 104 104 120 120 118 116
+        101 102 104 104 120 120 114 113
+        102 102 104 104 120 120 114 112
+        113 114 120 120 104 104 102 101
+        114 114 120 120 104 104 102 100
+        117 118 120 120 104 104 98 97
+        118 118 120 120 104 104 98 96");
+        let sz = 4;
+        let mut correct = vec![vec![false;2*sz];2*sz];
+        let mut values = vec![vec![0.0;2*sz];2*sz];
+        for (i,r) in gt.iter().enumerate(){
+            for (j,c) in r.iter().enumerate(){
+                values[i][j] = g_AB((i+1) as f64,(j+1) as f64,sz as f64);
+                if g_AB((i+1) as f64,(j+1) as f64,sz as f64) == *c{
+                    correct[i][j] = true;
+                }
+                //assert_eq!(f_AB((i+1) as f64,(j+1) as f64,sz as f64), gt[i][j]);
+            }
+        }
+        for r in correct{
+            println!("{:?}", r);
+        }
+        for r in values{
+            println!("{:?}", r);
+        }
+        assert!(false);
+    }
 }

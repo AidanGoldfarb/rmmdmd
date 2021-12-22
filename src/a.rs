@@ -83,7 +83,7 @@ pub fn t_N_a(i: usize, j: usize, n: usize) -> f64 {
 #[allow(unused, non_snake_case)]
 pub fn F_A(i: usize, j: usize, n: usize) -> f64 {
     //println!("f_T: {}\nf_AB: {}", f_T(i, j, n), f_AB(i as f64, (j as f64) % n as f64, n as f64));
-    f_T(i, j, n) + (4*n*n) as f64+f_AB(i as f64, (j as f64) % n as f64, n as f64)
+    f_T(i, j, n) + (4*n*n) as f64+f_AB(i as f64, (((j-1) as f64) % n as f64)+1.0, n as f64)
 }
 
 /*
