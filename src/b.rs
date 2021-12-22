@@ -60,7 +60,7 @@ pub fn t_N(i: usize, j: usize, n: usize) -> f64 {
     (50)
 */
 pub fn g_T(i: usize, j: usize, n: usize) -> f64 {
-    println!("g_T = btn + t_N\ng_T = {} + {}\n", btn(n) , t_N(i,j,n));
+    //println!("g_T = btn + t_N\ng_T = {} + {}\n", btn(n) , t_N(i,j,n));
     btn(n) + t_N(i,j,n)
 }
 
