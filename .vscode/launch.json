@@ -1,0 +1,38 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "stopOnEntry": true,
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug executable 'rmmdmd'",
+            "cargo": {
+                "args": [
+                    "run",
+                ],
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in executable 'rmmdmd'",
+            "console": "integratedTerminal",
+            "justMyCode": false,
+            "stopOnEntry": true,
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--bin=rmmdmd",
+                ],
+            },
+            "args": ["verify_58_sz_4"],
+            "cwd": "${workspaceFolder}"
+        }
+    ]
+}

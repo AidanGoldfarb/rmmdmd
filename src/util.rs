@@ -116,7 +116,10 @@ mod tests {
 
     #[test]
     fn verify_I(){
+        let i = 3.0;
         assert_eq!(0.0, I(false));
         assert_eq!(1.0, I(true));
+        assert_eq!(1.0, I(i<=3.0));
+        assert_eq!(0.0, I(i>3.0));
     }
 }
