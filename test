@@ -1,4 +1,4 @@
-for i in {0..15}; 
+for i in {7..15}; 
 do 
     python3 rmm.py $((2**i));
     cargo r --release $((2**i));
@@ -9,6 +9,6 @@ do
         mkdir -p failed_tests
         diff -y output.txt rust_output.txt > failed_tests/sz$((2**i)).txt
     else
-        echo "correct"
+        echo $((2**i))
     fi
 done

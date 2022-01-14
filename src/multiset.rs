@@ -90,7 +90,6 @@ pub fn reuse_distance(trace: Vec<f64>) -> HashMap<usize, usize> {
     for val in trace.iter(){
         let val = *val as usize;
         if stack.contains(&val){ //resuse
-            //println!("val: {}", val);
             let position = stack.iter().position(|&x| x == val).unwrap();  //get position in stack
             if position == stack.len()-1{ //top of stack
                 let freq = freq_map.entry(1).or_insert(0);
@@ -112,7 +111,6 @@ pub fn reuse_distance(trace: Vec<f64>) -> HashMap<usize, usize> {
         }
         else{
             stack.push(val);
-            // freq_map.insert(temp_dist, 0);
         }
     }
     freq_map
