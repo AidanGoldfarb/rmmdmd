@@ -26,7 +26,8 @@ fn main() {
     // write_to_file(process(res), "ms.txt".to_string());
 
     let (mut a,mut b) = init_mats(&sz);
-    write_to_file(mm_dist(&mut a,&mut b), "gt.txt".to_string());
+    mm_dist(&mut a,&mut b);
+    // write_to_file(mm_dist(&mut a,&mut b), "gt.txt".to_string());
 }
 
 pub fn write_to_file(hist: HashMap<usize,usize>, filename: String){

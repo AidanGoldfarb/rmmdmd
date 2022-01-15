@@ -13,6 +13,7 @@ def mat_mul(a,b):
         trace.append(str(a[0][0]))
         trace.append(str(b[0][0]))
         c[0][0] = tempname()
+        #print(c[0][0])
         trace.append(c[0][0])
     else:
         #A11B11 + A12B21
@@ -42,7 +43,7 @@ def matrix_add(a,b):
             trace.append(a[i,j])
             trace.append(b[i,j])
             result[i,j] = tempname()
-            trace.append(result[i,j])
+            trace.append(result[i,j] + "\tadd")
     # if n>1:
     #     print(result)
     return result
@@ -284,8 +285,10 @@ if __name__ == "__main__":
         for j in range(n_start):
             a[i,j] = a[i,j] + 1
             b[i,j] = b[i,j] + (n_start*n_start) + 1
-    mat_mul(a,b)
+    print(mat_mul(a,b))
     process_trace()
+    # for e in trace:
+    #     print(e)
 
     
     
