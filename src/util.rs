@@ -81,6 +81,21 @@ pub fn str_to_vec(input: &str) -> Vec<Vec<f64>>{
     res
 }
 
+#[allow(unused)]
+pub fn str_to_uvec(input: &str) -> Vec<Vec<usize>>{
+    let mut res = Vec::new();
+    let split = input.split("\n").collect::<Vec<&str>>();
+    for r in split{
+        let mut row = Vec::new();
+        let tmp = r.split_whitespace().collect::<Vec<&str>>();
+        for ele in tmp{
+            row.push(ele.parse::<usize>().unwrap());
+        }
+        res.push(row);
+    }
+    res
+}
+
 #[cfg(test)]
 mod tests {
     // Note this useful idiom: importing names from outer (for mod tests) scope.

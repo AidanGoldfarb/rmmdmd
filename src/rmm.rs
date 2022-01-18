@@ -48,7 +48,6 @@ pub fn mat_mul(a: &mut Vec<Vec<usize>>, b: &mut Vec<Vec<usize>>, dta: &mut Data)
         c11[0][0] = dta.temp;
         dta.trace.push("t".to_owned() + &dta.temp.to_string()); 
         dta.temp += 1;
-        // println!("{:?}", c11);
         return c11;
     }
     else{
@@ -118,10 +117,10 @@ fn matrix_add(a: &Vec<Vec<usize>>, b: &Vec<Vec<usize>>, dta: &mut Data) -> Vec<V
     let mut c = vec![vec![0 as usize; n]; n];
     for i in 0..c.len(){
         for j in 0..c.len(){
-            dta.trace.push(a[i][j].to_string());
-            dta.trace.push(b[i][j].to_string());
+            dta.trace.push("t".to_owned() + &a[i][j].to_string());
+            dta.trace.push("t".to_owned() + &b[i][j].to_string());
             c[i][j] = dta.temp;
-            dta.trace.push("t".to_owned() + &c[i][j].to_string() + &"\tadd".to_owned());
+            dta.trace.push("t".to_owned() + &c[i][j].to_string()); //+ &"\tadd".to_owned()
             dta.temp += 1;
         }
     }
@@ -168,47 +167,26 @@ fn matrix_add(a: &Vec<Vec<usize>>, b: &Vec<Vec<usize>>, dta: &mut Data) -> Vec<V
 // }
 
 fn stitch(tl: &Vec<Vec<usize>>, tr: &Vec<Vec<usize>>, bl: &Vec<Vec<usize>>, br: &Vec<Vec<usize>>) -> Vec<Vec<usize>> {
-    // for e in tl{
-    //     println!("{:?}", tl);
-    // } 
-    let mut c = Vec::new();
-
-    let n = tl.len();
-    if n == 1{
-        let r1 = vec![tl[0][0],tr[0][0]];
-        let r2 = vec![bl[0][0],br[0][0]];
-        c.push(r1);
-        c.push(r2);
-        return c;
-    }
-    else{
-        for i in 0..(2*n) {
-            let mut row = Vec::new();
-            for j in 0..(2*n) {
-                if i < n/2 && j < n/2{ //tl
-                    row.push(tl[i%n][j%n]);
-                    //println!("index: [{}][{}]", i, j);
-                }
-                else if i < n/2 && j > n/2{ //tr
-                    row.push(tr[i%n][j%n]);
-                }
-                else if i > n/2 && j < n/2{ //bl
-                    row.push(bl[i%n][j%n]);
-                }
-                else if i > n/2 && j > n/2{ //br
-                    row.push(br[i%n][j%n]);
-                }
-                else{
-                    break; //unreachable
-                }
+    let n = tl.len(); // == 1
+    let mut res = vec![vec![0;2*n];2*n]; // [ [_,_]
+    //                                        [_,_] ]
+    for i in 0..2*n{ // {0, 1}
+        for j in 0..2*n{ // {0, 1}
+            if i<n && j<n{
+                res[i][j] = tl[i][j];
             }
-            c.push(row);
+            else if i<n && j>=n{
+                res[i][j] = tr[i][j%n];
+            }
+            else if i>=n && j<n{
+                res[i][j] = bl[i%n][j];
+            } 
+            else{
+                res[i][j] = br[i%n][j%n];
+            }
         }
-        for e in &c{
-            println!("{:?}", e);
-        }
-        c
     }
+    res
 }
 
 fn corners(a: &Vec<Vec<usize>>) -> (Vec<Vec<usize>>, Vec<Vec<usize>>, Vec<Vec<usize>>, Vec<Vec<usize>>){
@@ -253,4 +231,56 @@ fn corners(a: &Vec<Vec<usize>>) -> (Vec<Vec<usize>>, Vec<Vec<usize>>, Vec<Vec<us
     }
 
     return (tl,tr,bl,br);
+}
+
+#[cfg(test)]
+mod tests {
+    // Note this useful idiom: importing names from outer (for mod tests) scope.
+    use super::*;
+    use pretty_assertions::{assert_eq};
+    use crate::util::str_to_uvec;
+    
+
+    #[test]
+    fn stitch_test_sz_1(){
+        let tl = str_to_uvec("1");
+        let tr = str_to_uvec("5");
+        let bl = str_to_uvec("9");
+        let br = str_to_uvec("13");
+
+        let gt = str_to_uvec("1 5
+        9 13");
+
+        let res = stitch(&tl,&tr,&bl,&br);
+        for r in &res{
+            println!("{:?}", r);
+        }
+
+        assert_eq!(res,gt);
+    }
+
+
+    #[test]
+    fn stitch_test_sz_4(){
+        let tl = str_to_uvec("1 2
+        3 4");
+        let tr = str_to_uvec("5 6
+        7 8");
+        let bl = str_to_uvec("9 10
+        11 12");
+        let br = str_to_uvec("13 14
+        15 16");
+
+        let gt = str_to_uvec("1 2 5 6
+        3 4 7 8
+        9 10 13 14
+        11 12 15 16");
+
+        let res = stitch(&tl,&tr,&bl,&br);
+        for r in &res{
+            println!("{:?}", r);
+        }
+
+        assert_eq!(res,gt);
+    }
 }

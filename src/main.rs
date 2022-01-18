@@ -19,15 +19,20 @@ use itertools::Itertools;
 
 
 fn main() {
-    let args: Vec<String> = env::args().collect();
-    let sz = args[1].parse::<usize>().unwrap();
-    
-    // let res = multiset(sz);
-    // write_to_file(process(res), "ms.txt".to_string());
-
-    let (mut a,mut b) = init_mats(&sz);
-    mm_dist(&mut a,&mut b);
-    // write_to_file(mm_dist(&mut a,&mut b), "gt.txt".to_string());
+    // let args: Vec<String> = env::args().collect();
+    // let sz = args[1].parse::<usize>().unwrap();
+    let mut output = File::create("result.txt").unwrap();
+    let mut sz = 128;
+    loop{
+        let (mut a,mut b) = init_mats(&sz);
+        assert_eq!(process(multiset(sz)),mm_dist(&mut a,&mut b));
+        write!(
+            output,
+            "sz: {} passed\n",
+            sz
+        ).unwrap();
+        sz *= 2;
+    }
 }
 
 pub fn write_to_file(hist: HashMap<usize,usize>, filename: String){

@@ -43,7 +43,7 @@ def matrix_add(a,b):
             trace.append(a[i,j])
             trace.append(b[i,j])
             result[i,j] = tempname()
-            trace.append(result[i,j] + "\tadd")
+            trace.append(result[i,j])
     # if n>1:
     #     print(result)
     return result
@@ -285,12 +285,13 @@ if __name__ == "__main__":
         for j in range(n_start):
             a[i,j] = a[i,j] + 1
             b[i,j] = b[i,j] + (n_start*n_start) + 1
-    print(mat_mul(a,b))
+    mat_mul(a,b)
     process_trace()
     # for e in trace:
     #     print(e)
 
-    
+    for t in trace:
+        print(t)
     
 	
 	
